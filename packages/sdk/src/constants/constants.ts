@@ -13,6 +13,7 @@ export enum ChainId {
   Arbitrum = 42161,
   Polygon = 137,
   Gnosis = 100,
+  ConsenSys = 18021982
 }
 
 export enum ChainName {
@@ -21,6 +22,7 @@ export enum ChainName {
   Arbitrum = 'Arbitrum',
   Polygon = 'Polygon',
   Gnosis = 'Gnosis',
+  ConsenSys = 'ConsenSys'
 }
 
 export enum ChainSlug {
@@ -29,6 +31,7 @@ export enum ChainSlug {
   Arbitrum = 'arbitrum',
   Polygon = 'polygon',
   Gnosis = 'gnosis',
+  ConsenSys = 'ConsenSys'
 }
 
 export enum Slug {
@@ -41,6 +44,7 @@ export enum Slug {
   optimism = 'optimism',
   gnosis = 'gnosis',
   polygon = 'polygon',
+  consenSys = 'consensys'
 }
 
 export enum CanonicalToken {

@@ -4,6 +4,7 @@ type Bps = {
   gnosis?: number
   optimism?: number
   arbitrum?: number
+  consensys?: number
 }
 
 export type Fees = {

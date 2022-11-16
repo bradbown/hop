@@ -10,6 +10,14 @@ export const networks: Networks = {
     explorerUrls: ['https://goerli.etherscan.io'],
     waitConfirmations: 1
   },
+  consensys: {
+      name: chains.consensys.name,
+      networkId: 18021982,
+      publicRpcUrl: 'localhost:8545',
+      fallbackPublicRpcUrls: [],
+      explorerUrls: ['http://localhost:4000'],
+      waitConfirmations: 1
+  },
   polygon: {
     name: chains.polygon.name,
     networkId: 80001,

@@ -24,6 +24,13 @@ export const networks: Networks = {
     nativeBridgeUrl: _networks.ethereum.nativeBridgeUrl,
     waitConfirmations: _networks.ethereum.waitConfirmations
   },
+  consensys: {
+      networkId: _networks.consensys.networkId,
+      rpcUrl: _networks.consensys.publicRpcUrl,
+      fallbackRpcUrls: _networks.consensys.fallbackPublicRpcUrls,
+      explorerUrl: 'localhost:4000',
+      waitConfirmations: _networks.consensys.waitConfirmations      
+  },
   polygon: {
     networkId: _networks.polygon.networkId,
     rpcUrl: _networks.polygon.publicRpcUrl,

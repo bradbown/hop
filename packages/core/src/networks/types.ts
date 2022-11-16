@@ -10,6 +10,7 @@ export type Network = {
 
 export type Networks = {
   ethereum: Network
+  consensys?: Network
   arbitrum?: Network
   optimism?: Network
   gnosis?: Network

@@ -5,6 +5,10 @@ export const chains: Chains = {
     name: 'Ethereum',
     slug: 'ethereum'
   },
+  consensys: {
+    name: 'ConsenSys',
+    slug: 'consensys'
+  },
   gnosis: {
     name: 'Gnosis',
     slug: 'gnosis'

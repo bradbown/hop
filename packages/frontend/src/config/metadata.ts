@@ -5,6 +5,7 @@ import ArbitrumLogo from 'src/assets/logos/arbitrum.svg'
 import OptimismLogo from 'src/assets/logos/optimism.svg'
 import GnosisLogo from 'src/assets/logos/gnosis.svg'
 import PolygonLogo from 'src/assets/logos/polygon.svg'
+import ConsenSysLogo from 'src/assets/logos/ConsenSysLogo.svg'
 import { TokenSymbol, Slug } from '@hop-protocol/sdk'
 import { hopAppNetwork } from 'src/config'
 
@@ -38,6 +39,12 @@ export const metadata: Metadata = {
       isLayer1: true,
       image: MainnetLogo,
       nativeTokenSymbol: 'ETH',
+    },
+    consensys: {
+      name: 'ConsenSys',
+      isLayer1: false,
+      image: ConsenSysLogo,
+      nativeTokenSymbol: 'ETH'
     },
     kovan: {
       name: 'Kovan',

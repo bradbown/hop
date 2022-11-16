@@ -13,6 +13,11 @@ export const metadata: any = {
       isLayer1: true,
       nativeTokenSymbol: 'ETH'
     },
+    consensys: {
+      name: 'ConsenSys',
+      isLayer1: false,
+      nativeTokenSymbol: 'ETH'
+    },
     arbitrum: {
       name: 'Arbitrum',
       isLayer1: false,

@@ -40,6 +40,12 @@ export const metadata: Metadata = {
       image: MainnetLogo,
       nativeTokenSymbol: 'ETH',
     },
+    localhost: {
+      name: 'localhost',
+      isLayer1: true,
+      image: MainnetLogo,
+      nativeTokenSymbol: 'ETH',
+    },
     consensys: {
       name: 'ConsenSys',
       isLayer1: false,

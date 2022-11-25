@@ -1,5 +1,5 @@
 import { ChainName, ChainSlug, Errors, NetworkSlug, Slug } from '../constants'
-import { goerli, mainnet } from '@hop-protocol/core/networks'
+import { mainnet } from '@hop-protocol/core/networks'
 import { metadata } from '../config'
 import { providers } from 'ethers'
 
@@ -12,7 +12,7 @@ class Chain {
   nativeTokenSymbol: string
 
   static Ethereum = newChain(ChainSlug.Ethereum, mainnet.ethereum.networkId)
-  // static Consensys = newChain(ChainSlug.ConsenSys, goerli.consensys.networkId) 
+  static Consensys = newChain(ChainSlug.ConsenSys, mainnet.consensys.networkId)
   static Optimism = newChain(ChainSlug.Optimism, mainnet.optimism.networkId)
   static Arbitrum = newChain(ChainSlug.Arbitrum, mainnet.arbitrum.networkId)
   static Gnosis = newChain(ChainSlug.Gnosis, mainnet.gnosis.networkId)
@@ -31,6 +31,7 @@ class Chain {
     this.name = name
     this.slug = (name || '').trim().toLowerCase()
     if (
+      this.slug === NetworkSlug.Localhost ||
       this.slug === NetworkSlug.Kovan ||
       this.slug === NetworkSlug.Goerli ||
       this.slug === NetworkSlug.Mainnet ||
@@ -61,6 +62,7 @@ class Chain {
 
 function newChain (chain: NetworkSlug | ChainSlug | string, chainId?: number) {
   if (
+    chain === NetworkSlug.Localhost ||
     chain === NetworkSlug.Mainnet ||
     chain === NetworkSlug.Staging ||
     chain === NetworkSlug.Goerli ||

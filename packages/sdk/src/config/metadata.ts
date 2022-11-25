@@ -5,7 +5,8 @@ export const metadata: any = {
     kovan: hopMetadata.kovan.tokens,
     goerli: hopMetadata.goerli.tokens,
     mainnet: hopMetadata.mainnet.tokens,
-    staging: hopMetadata.mainnet.tokens
+    staging: hopMetadata.mainnet.tokens,
+    localhost: hopMetadata.localhost.tokens
   },
   networks: {
     ethereum: {

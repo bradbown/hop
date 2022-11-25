@@ -24,6 +24,7 @@ type RelayerFee = {
   gnosis?: boolean
   optimism?: boolean
   arbitrum?: boolean
+  consensys?: boolean
 }
 
 export type Config = {

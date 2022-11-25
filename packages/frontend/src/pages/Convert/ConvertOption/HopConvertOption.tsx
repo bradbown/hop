@@ -90,10 +90,10 @@ class HopConvertOption extends ConvertOption {
       adjustedBonderFee,
       adjustedDestinationTxFee,
     } = await bridge.getSendData(amountIn, sourceNetwork.slug, destNetwork.slug, true)
-    const availableLiquidity = await bridge.getFrontendAvailableLiquidity(
-      sourceNetwork.slug,
-      destNetwork.slug
-    )
+    // const availableLiquidity = await bridge.getFrontendAvailableLiquidity(
+    //   sourceNetwork.slug,
+    //   destNetwork.slug
+    // )
 
     let estimatedReceived = amountIn
     let warning
@@ -102,10 +102,10 @@ class HopConvertOption extends ConvertOption {
       warning = 'Bonder fee greater than estimated received'
     }
 
-    if (!sourceNetwork?.isLayer1 && amountIn.gt(availableLiquidity)) {
-      const formattedAmount = toTokenDisplay(availableLiquidity, token.decimals)
-      warning = `Insufficient liquidity. There is ${formattedAmount} ${l1TokenSymbol} available on ${destNetwork.name}.`
-    }
+    // if (!sourceNetwork?.isLayer1 && amountIn.gt(availableLiquidity)) {
+    //   const formattedAmount = toTokenDisplay(availableLiquidity, token.decimals)
+    //   warning = `Insufficient liquidity. There is ${formattedAmount} ${l1TokenSymbol} available on ${destNetwork.name}.`
+    // }
 
     if (amountIn.gte(totalFee)) {
       estimatedReceived = amountIn.sub(totalFee)

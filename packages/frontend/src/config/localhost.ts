@@ -1,5 +1,5 @@
-import { goerli as goerliAddresses } from '@hop-protocol/core/addresses'
-import { goerli as goerliNetworks } from '@hop-protocol/core/networks'
+import { localhost as localhostAddresses } from '@hop-protocol/core/addresses'
+import { localhost as localhostNetworks } from '@hop-protocol/core/networks'
 import { HopAddresses, Networks } from './interfaces'
 
 export const addresses: HopAddresses = {
@@ -9,11 +9,11 @@ export const addresses: HopAddresses = {
     stakingRewards: '',
     governorAlpha: '',
   },
-  tokens: goerliAddresses.bridges,
-  bonders: goerliAddresses.bonders,
+  tokens: localhostAddresses.bridges,
+  bonders: localhostAddresses.bonders,
 }
 
-const _networks = goerliNetworks as any
+const _networks = localhostNetworks as any
 
 export const networks: Networks = {
   ethereum: {

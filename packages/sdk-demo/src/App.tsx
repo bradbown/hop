@@ -148,6 +148,7 @@ function App () {
   }, [signer])
 
   async function updateNeedsApproval () {
+    console.log("updateNeedsApproval")
     if (signer) {
       try {
         const amountBn = bridge.parseUnits(amount)

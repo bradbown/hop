@@ -3,47 +3,54 @@ import * as goerli from './goerli'
 import * as kovan from './kovan'
 import * as mainnet from './mainnet'
 import * as staging from './staging'
+import * as localhost from './localhost'
 
 const addresses: {[network: string]: any} = {
   mainnet: mainnet.addresses,
   staging: staging.addresses,
   kovan: kovan.addresses,
-  goerli: goerli.addresses
+  goerli: goerli.addresses,
+  localhost: localhost.addresses
 }
 
 const chains: {[network: string]: any} = {
   mainnet: mainnet.chains,
   staging: staging.chains,
   kovan: kovan.chains,
-  goerli: goerli.chains
+  goerli: goerli.chains,
+  localhost: localhost.chains
 }
 
 const bonders: {[network: string]: {[token: string]: Record<string, Record<string, string>>}} = {
   mainnet: mainnet.bonders,
   staging: staging.bonders,
   kovan: kovan.bonders,
-  goerli: goerli.bonders
+  goerli: goerli.bonders,
+  localhost: localhost.bonders
 }
 
 const bonderFeeBps: {[network: string]: {[token: string]: Record<string, number>}} = {
   mainnet: mainnet.bonderFeeBps,
   staging: staging.bonderFeeBps,
   kovan: kovan.bonderFeeBps,
-  goerli: goerli.bonderFeeBps
+  goerli: goerli.bonderFeeBps,
+  localhost: localhost.bonderFeeBps
 }
 
 const destinationFeeGasPriceMultiplier: {[network: string]: number} = {
   mainnet: mainnet.destinationFeeGasPriceMultiplier,
   staging: staging.destinationFeeGasPriceMultiplier,
   kovan: kovan.destinationFeeGasPriceMultiplier,
-  goerli: goerli.destinationFeeGasPriceMultiplier
+  goerli: goerli.destinationFeeGasPriceMultiplier,
+  localhost: localhost.destinationFeeGasPriceMultiplier
 }
 
 const relayerFeeEnabled: {[network: string]: Record<string, boolean>} = {
   mainnet: mainnet.relayerFeeEnabled,
   staging: staging.relayerFeeEnabled,
   kovan: kovan.relayerFeeEnabled,
-  goerli: goerli.relayerFeeEnabled
+  goerli: goerli.relayerFeeEnabled,
+  localhost: localhost.relayerFeeEnabled
 }
 
 const config = {

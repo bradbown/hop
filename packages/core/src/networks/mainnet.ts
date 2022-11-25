@@ -12,6 +12,15 @@ export const networks: Networks = {
     explorerUrls: ['https://etherscan.io'],
     waitConfirmations: 64
   },
+  consensys: {
+    name: chains.consensys.name,
+    networkId: 18021982,
+    publicRpcUrl: 'localhost:8545', // from ethers
+    fallbackPublicRpcUrls: [],
+    explorerUrls: ['localhost:4000'],
+    nativeBridgeUrl: 'https://gateway.optimism.io/welcome',
+    waitConfirmations: 1
+  },
   arbitrum: {
     name: chains.arbitrum.name,
     networkId: 42161,

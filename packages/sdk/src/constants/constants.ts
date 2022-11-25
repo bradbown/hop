@@ -4,7 +4,8 @@ export enum NetworkSlug {
   Mainnet = 'mainnet',
   Staging = 'staging',
   Goerli = 'goerli',
-  Kovan = 'kovan'
+  Kovan = 'kovan',
+  Localhost = 'localhost'
 }
 
 export enum ChainId {
@@ -31,7 +32,7 @@ export enum ChainSlug {
   Arbitrum = 'arbitrum',
   Polygon = 'polygon',
   Gnosis = 'gnosis',
-  ConsenSys = 'ConsenSys'
+  ConsenSys = 'consensys'
 }
 
 export enum Slug {
@@ -44,7 +45,8 @@ export enum Slug {
   optimism = 'optimism',
   gnosis = 'gnosis',
   polygon = 'polygon',
-  consenSys = 'consensys'
+  consenSys = 'consensys',
+  localhost = 'localhost'
 }
 
 export enum CanonicalToken {

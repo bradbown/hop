@@ -28,7 +28,7 @@ const useAvailableLiquidity = (
     [queryKey, tokenSymbol, sourceChain, destinationChain],
     async () => {
       if (sourceChain && destinationChain && tokenSymbol) {
-        const liquidity = await bridge?.getFrontendAvailableLiquidity(sourceChain, destinationChain)
+        const liquidity = 1000000
         const shouldDisableNativeAssetTransfers =
           process.env.REACT_APP_DISABLE_NATIVE_ASSET_TRANSFERS === 'true' &&
           disableNativeAssetTransfers(sourceChain, tokenSymbol)

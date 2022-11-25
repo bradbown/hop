@@ -10,13 +10,15 @@ import { L1HomeAMBNativeToErc20__factory } from '@hop-protocol/core/contracts/fa
 import { L2AmmWrapper__factory } from '@hop-protocol/core/contracts/factories/L2AmmWrapper__factory'
 import { L2Bridge } from '@hop-protocol/core/contracts/L2Bridge'
 import { L2Bridge__factory } from '@hop-protocol/core/contracts/factories/L2Bridge__factory'
+import { AbiItem } from 'web3-utils'
 
 import { ApiKeys, PriceFeed } from './priceFeed'
 import {
   BigNumber,
   BigNumberish,
   Signer,
-  ethers
+  ethers,
+  ContractInterface
 } from 'ethers'
 import {
   BondTransferGasLimit,
@@ -324,18 +326,18 @@ class HopBridge extends Base {
       throw new Error(Errors.NotEnoughAllowance)
     }
 
-    const [availableLiquidity, requiredLiquidity] = await Promise.all([
-      this.getFrontendAvailableLiquidity(
-        sourceChain,
-        destinationChain
-      ),
-      this.getRequiredLiquidity(tokenAmount, sourceChain)
-    ])
+    // const [availableLiquidity, requiredLiquidity] = await Promise.all([
+    //   this.getFrontendAvailableLiquidity(
+    //     sourceChain,
+    //     destinationChain
+    //   ),
+    //   this.getRequiredLiquidity(tokenAmount, sourceChain)
+    // ])
 
-    const isAvailable = availableLiquidity.gte(requiredLiquidity)
-    if (!isAvailable) {
-      throw new Error('Insufficient liquidity available by bonder. Try again in a few minutes')
-    }
+    // const isAvailable = availableLiquidity.gte(requiredLiquidity)
+    // if (!isAvailable) {
+    //   throw new Error('Insufficient liquidity available by bonder. Try again in a few minutes')
+    // }
 
     await this.checkConnectedChain(this.signer, sourceChain)
 
@@ -379,20 +381,9 @@ class HopBridge extends Base {
         throw new Error('Cannot send from layer 1 to layer 1')
       }
       // L1 -> L2
-      const bonderAddress = await this.getBonderAddress(sourceChain, destinationChain)
-      let relayerFee = options?.relayerFee
-      if (!relayerFee) {
-        relayerFee = await this.getTotalFee(
-          tokenAmount,
-          sourceChain,
-          destinationChain
-        )
-      }
       return this.populateSendL1ToL2Tx({
         destinationChain: destinationChain,
         sourceChain,
-        relayer: options?.relayer ?? bonderAddress,
-        relayerFee,
         amount: tokenAmount,
         amountOutMin: options?.amountOutMin ?? 0,
         deadline: options?.deadline,
@@ -644,10 +635,10 @@ class HopBridge extends Base {
       ] as const
 
       const l1Bridge = await this.getL1Bridge(sourceChain.provider)
-      const isPaused = await l1Bridge.isChainIdPaused(destinationChain.chainId)
-      if (isPaused) {
-        throw new Error(`deposits to destination chain "${destinationChain.name}" are currently paused. Please check official announcement channels for status updates.`)
-      }
+      // const isPaused = await l1Bridge.isChainIdPaused(destinationChain.chainId)
+      // if (isPaused) {
+      //   throw new Error(`deposits to destination chain "${destinationChain.name}" are currently paused. Please check official announcement channels for status updates.`)
+      // }
 
       return l1Bridge.populateTransaction.sendToL2(...txOptions)
     } else {
@@ -700,6 +691,43 @@ class HopBridge extends Base {
     amountIn = BigNumber.from(amountIn)
     sourceChain = this.toChainModel(sourceChain)
     destinationChain = this.toChainModel(destinationChain)
+
+    console.log("destination chain: ")
+    console.log(destinationChain)
+    console.log("chain: ")
+    console.log(Chain.Consensys)
+    if(destinationChain.chainId == Chain.Consensys.chainId) {
+      const destinationTxFeePromise = this.getDestinationTransactionFee(
+        sourceChain,
+        destinationChain
+      )
+
+      const [
+        destinationTxFee
+      ] = await Promise.all([
+        destinationTxFeePromise
+      ])
+      const amountOut = amountIn.sub(destinationTxFee)
+      const rate = 0 
+      const priceImpact = 0
+      const hTokenAmount = BigNumber.from(0)
+      const lpFees = BigNumber.from(0)
+      const adjustedBonderFee = BigNumber.from(0)
+      const adjustedDestinationTxFee = destinationTxFee
+      const totalFee = destinationTxFee
+      const estimatedReceived = amountIn.sub(destinationTxFee)
+      return {
+        amountOut,
+        rate,
+        priceImpact,
+        requiredLiquidity: hTokenAmount,
+        lpFees,
+        adjustedBonderFee,
+        adjustedDestinationTxFee,
+        totalFee,
+        estimatedReceived
+      }
+    }
 
     const [hTokenAmount, lpFees] = await Promise.all([
       this.calcToHTokenAmount(amountIn, sourceChain),
@@ -932,6 +960,11 @@ class HopBridge extends Base {
     sourceChain: TChain,
     destinationChain: TChain
   ): Promise<BigNumber> {
+    //TODO configure this with Consensys chain
+    if(destinationChain == Chain.Consensys) {
+      return BigNumber.from(1);
+    }
+
     sourceChain = this.toChainModel(sourceChain)
     destinationChain = this.toChainModel(destinationChain)
 
@@ -1220,6 +1253,7 @@ class HopBridge extends Base {
     sourceChain = this.toChainModel(sourceChain)
     destinationChain = this.toChainModel(destinationChain)
     const token = this.toTokenModel(this.tokenSymbol)
+    console.log("getFrontendAvailableLiquidity")
     const bonder = await this.getBonderAddress(sourceChain, destinationChain)
     let [availableLiquidity, unbondedTransferRootAmount, tokenPrice] = await Promise.all([
       this.getBaseAvailableCreditIncludingVault(
@@ -1491,6 +1525,162 @@ class HopBridge extends Base {
    * @returns {Object} Ethers contract instance.
    */
   public async getL1Bridge (signer: TProvider = this.signer): Promise<any> {
+    const abi = [
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "_token",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "_l1Bridge",
+            "type": "address"
+          }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "constructor"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "previousOwner",
+            "type": "address"
+          },
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "newOwner",
+            "type": "address"
+          }
+        ],
+        "name": "OwnershipTransferred",
+        "type": "event"
+      },
+      {
+        "inputs": [],
+        "name": "l1Bridge",
+        "outputs": [
+          {
+            "internalType": "address",
+            "name": "",
+            "type": "address"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "l1_token",
+        "outputs": [
+          {
+            "internalType": "address",
+            "name": "",
+            "type": "address"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "owner",
+        "outputs": [
+          {
+            "internalType": "address",
+            "name": "",
+            "type": "address"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "renounceOwnership",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "recipient",
+            "type": "address"
+          },
+          {
+            "internalType": "uint256",
+            "name": "_fee",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "_deadline",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "amount",
+            "type": "uint256"
+          }
+        ],
+        "name": "sendToL2",
+        "outputs": [],
+        "stateMutability": "payable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "_token",
+            "type": "address"
+          }
+        ],
+        "name": "setPeggedToken",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "recipient",
+            "type": "address"
+          },
+          {
+            "internalType": "uint256",
+            "name": "amount",
+            "type": "uint256"
+          }
+        ],
+        "name": "transferFromBridge",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "newOwner",
+            "type": "address"
+          }
+        ],
+        "name": "transferOwnership",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      }
+    ] as ContractInterface;
+
     const bridgeAddress = this.getL1BridgeAddress(
       this.tokenSymbol,
       Chain.Ethereum
@@ -1499,7 +1689,8 @@ class HopBridge extends Base {
       throw new Error(`token "${this.tokenSymbol}" is unsupported`)
     }
     const provider = await this.getSignerOrProvider(Chain.Ethereum, signer)
-    return L1ERC20Bridge__factory.connect(bridgeAddress, provider)
+    // TODO Replace with our bridge ABI
+    return new ethers.Contract(bridgeAddress, abi, provider);
   }
 
   /**
@@ -1882,28 +2073,18 @@ class HopBridge extends Base {
       }
     }
 
-    if (amountOutMin.lt(0)) {
-      amountOutMin = BigNumber.from(0)
-    }
 
     const txOptions = [
-      destinationChainId,
       recipient,
-      amount || 0,
-      amountOutMin,
-      deadline,
-      relayer,
       relayerFee || BigNumber.from(0),
-      {
-        ...(await this.txOverrides(Chain.Ethereum)),
-        value: isNativeToken ? amount : undefined
-      }
+      deadline,
+      amount || 0
     ] as const
 
-    const isPaused = await l1Bridge.isChainIdPaused(destinationChain.chainId)
-    if (isPaused) {
-      throw new Error(`deposits to destination chain "${destinationChain.name}" are currently paused. Please check official announcement channels for status updates.`)
-    }
+    // const isPaused = await l1Bridge.isChainIdPaused(destinationChain.chainId)
+    // if (isPaused) {
+    //   throw new Error(`deposits to destination chain "${destinationChain.name}" are currently paused. Please check official announcement channels for status updates.`)
+    // }
 
     return l1Bridge.populateTransaction.sendToL2(
       ...txOptions
@@ -2347,7 +2528,9 @@ class HopBridge extends Base {
   }
 
   async needsApproval (amount: TAmount, chain: TChain, address?: string) {
+    console.log("chain: {$chain}")
     const token = this.getCanonicalToken(chain)
+    console.log("chain: {$token}")
     const isHTokenTransfer = false
     const spender = await this.getSendApprovalAddress(chain, isHTokenTransfer)
     return token.needsApproval(spender, amount, address)

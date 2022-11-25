@@ -50,6 +50,8 @@ const networkNames: any = {
   100: 'Gnosis',
   80001: 'Polygon',
   137: 'Polygon',
+  59140: 'Consensys',
+  19940131: 'Localhost'
 }
 
 const getRpcUrls = (): Record<string, string> => {
@@ -59,6 +61,12 @@ const getRpcUrls = (): Record<string, string> => {
       421613: getRpcUrl(ChainSlug.Arbitrum),
       420: getRpcUrl(ChainSlug.Optimism),
       80001: getRpcUrl(ChainSlug.Polygon),
+      18021982: getRpcUrl(ChainSlug.ConsenSys),
+    }
+  } else if (reactAppNetwork === 'localhost') {
+    return {
+      19940131: getRpcUrl(ChainSlug.Ethereum),
+      59140: getRpcUrl(ChainSlug.ConsenSys)
     }
   } else {
     return {

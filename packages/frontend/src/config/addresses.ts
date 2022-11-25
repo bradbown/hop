@@ -1,6 +1,7 @@
 import { mainnetAddresses, mainnetNetworks } from './mainnet'
 import { addresses as kovanAddresses, networks as kovanNetworks } from './kovan'
 import { addresses as goerliAddresses, networks as goerliNetworks } from './goerli'
+import { addresses as localhostAddresses, networks as localhostNetworks } from './localhost'
 import { Slug } from '@hop-protocol/sdk'
 
 const reactAppNetwork = process.env.REACT_APP_NETWORK || Slug.mainnet
@@ -18,6 +19,9 @@ if (isMainnet) {
 } else if (hopAppNetwork === Slug.goerli) {
   addresses = goerliAddresses
   networks = goerliNetworks
+} else if (hopAppNetwork === Slug.localhost) {
+  addresses = localhostAddresses
+  networks = localhostNetworks
 }
 
 let enabledTokens: string | string[] | undefined = process.env.REACT_APP_ENABLED_TOKENS

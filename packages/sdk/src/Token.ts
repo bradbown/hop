@@ -346,6 +346,7 @@ class Token extends Base {
 
   private async getGasEstimateFromAddress () {
     let address = await this.getSignerAddress()
+    console.log(address)
     if (!address) {
       address = await this._getBonderAddress(this._symbol, this.chain, Chain.Ethereum)
     }

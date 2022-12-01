@@ -54,7 +54,7 @@ export const addresses: Addresses = {
       // Todo replace addresses
       consensys: {
         l1CanonicalBridge: '0x0000000000000000000000000000000000000000',
-        l2Bridge: '0xb276BC046DFf5024D20A3947475eA20C9F08eB1F',
+        l2Bridge: '0x61B314a5619fB4128714D66686ee07EcA62A3671',
         l2CanonicalBridge: '0x61B314a5619fB4128714D66686ee07EcA62A3671',
         l2CanonicalToken: '0x61B314a5619fB4128714D66686ee07EcA62A3671'
       }

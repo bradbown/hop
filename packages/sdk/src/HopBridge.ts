@@ -1538,7 +1538,7 @@ class HopBridge extends Base {
             "type": "address"
           },
           {
-            "internalType": "address",
+            "internalType": "address payable",
             "name": "_l1Bridge",
             "type": "address"
           }
@@ -1566,8 +1566,25 @@ class HopBridge extends Base {
         "type": "event"
       },
       {
+        "stateMutability": "payable",
+        "type": "fallback"
+      },
+      {
         "inputs": [],
         "name": "l1Bridge",
+        "outputs": [
+          {
+            "internalType": "address payable",
+            "name": "",
+            "type": "address"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "l1Token",
         "outputs": [
           {
             "internalType": "address",
@@ -1580,7 +1597,7 @@ class HopBridge extends Base {
       },
       {
         "inputs": [],
-        "name": "l1_token",
+        "name": "l2TokenPair",
         "outputs": [
           {
             "internalType": "address",
@@ -1647,6 +1664,19 @@ class HopBridge extends Base {
             "type": "address"
           }
         ],
+        "name": "setL2TokenPair",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "_token",
+            "type": "address"
+          }
+        ],
         "name": "setPeggedToken",
         "outputs": [],
         "stateMutability": "nonpayable",
@@ -1682,8 +1712,12 @@ class HopBridge extends Base {
         "outputs": [],
         "stateMutability": "nonpayable",
         "type": "function"
+      },
+      {
+        "stateMutability": "payable",
+        "type": "receive"
       }
-    ] as ContractInterface;
+    ] as ContractInterface
 
     const bridgeAddress = this.getL1BridgeAddress(
       this.tokenSymbol,
@@ -1705,7 +1739,448 @@ class HopBridge extends Base {
    */
   public async getL2Bridge (chain: TChain, signer: TProvider = this.signer): Promise<any> {
     chain = this.toChainModel(chain)
+
+    const abi = [
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "_l2Bridge",
+            "type": "address"
+          },
+          {
+            "internalType": "string",
+            "name": "name",
+            "type": "string"
+          },
+          {
+            "internalType": "string",
+            "name": "symbol",
+            "type": "string"
+          }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "constructor"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "owner",
+            "type": "address"
+          },
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "spender",
+            "type": "address"
+          },
+          {
+            "indexed": false,
+            "internalType": "uint256",
+            "name": "value",
+            "type": "uint256"
+          }
+        ],
+        "name": "Approval",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "previousOwner",
+            "type": "address"
+          },
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "newOwner",
+            "type": "address"
+          }
+        ],
+        "name": "OwnershipTransferred",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "from",
+            "type": "address"
+          },
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "to",
+            "type": "address"
+          },
+          {
+            "indexed": false,
+            "internalType": "uint256",
+            "name": "value",
+            "type": "uint256"
+          }
+        ],
+        "name": "Transfer",
+        "type": "event"
+      },
+      {
+        "stateMutability": "payable",
+        "type": "fallback"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "owner",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "spender",
+            "type": "address"
+          }
+        ],
+        "name": "allowance",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "spender",
+            "type": "address"
+          },
+          {
+            "internalType": "uint256",
+            "name": "amount",
+            "type": "uint256"
+          }
+        ],
+        "name": "approve",
+        "outputs": [
+          {
+            "internalType": "bool",
+            "name": "",
+            "type": "bool"
+          }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "account",
+            "type": "address"
+          }
+        ],
+        "name": "balanceOf",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "decimals",
+        "outputs": [
+          {
+            "internalType": "uint8",
+            "name": "",
+            "type": "uint8"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "spender",
+            "type": "address"
+          },
+          {
+            "internalType": "uint256",
+            "name": "subtractedValue",
+            "type": "uint256"
+          }
+        ],
+        "name": "decreaseAllowance",
+        "outputs": [
+          {
+            "internalType": "bool",
+            "name": "",
+            "type": "bool"
+          }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "erc20Wrapper",
+        "outputs": [
+          {
+            "internalType": "address",
+            "name": "",
+            "type": "address"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "spender",
+            "type": "address"
+          },
+          {
+            "internalType": "uint256",
+            "name": "addedValue",
+            "type": "uint256"
+          }
+        ],
+        "name": "increaseAllowance",
+        "outputs": [
+          {
+            "internalType": "bool",
+            "name": "",
+            "type": "bool"
+          }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "l2Bridge",
+        "outputs": [
+          {
+            "internalType": "address",
+            "name": "",
+            "type": "address"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "name",
+        "outputs": [
+          {
+            "internalType": "string",
+            "name": "",
+            "type": "string"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "owner",
+        "outputs": [
+          {
+            "internalType": "address",
+            "name": "",
+            "type": "address"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "recipient",
+            "type": "address"
+          },
+          {
+            "internalType": "uint256",
+            "name": "_amount",
+            "type": "uint256"
+          }
+        ],
+        "name": "receiveFromL1",
+        "outputs": [],
+        "stateMutability": "payable",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "renounceOwnership",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "recipient",
+            "type": "address"
+          },
+          {
+            "internalType": "uint256",
+            "name": "_fee",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "_deadline",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "_amount",
+            "type": "uint256"
+          }
+        ],
+        "name": "sendToL1",
+        "outputs": [],
+        "stateMutability": "payable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "_erc20Wrapper",
+            "type": "address"
+          }
+        ],
+        "name": "setERC20Wrapper",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "symbol",
+        "outputs": [
+          {
+            "internalType": "string",
+            "name": "",
+            "type": "string"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "totalSupply",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "to",
+            "type": "address"
+          },
+          {
+            "internalType": "uint256",
+            "name": "amount",
+            "type": "uint256"
+          }
+        ],
+        "name": "transfer",
+        "outputs": [
+          {
+            "internalType": "bool",
+            "name": "",
+            "type": "bool"
+          }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "from",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "to",
+            "type": "address"
+          },
+          {
+            "internalType": "uint256",
+            "name": "amount",
+            "type": "uint256"
+          }
+        ],
+        "name": "transferFrom",
+        "outputs": [
+          {
+            "internalType": "bool",
+            "name": "",
+            "type": "bool"
+          }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "newOwner",
+            "type": "address"
+          }
+        ],
+        "name": "transferOwnership",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "stateMutability": "payable",
+        "type": "receive"
+      }
+    ] as ContractInterface
+
     const bridgeAddress = this.getL2BridgeAddress(this.tokenSymbol, chain)
+    console.log("getL2Bridge" + bridgeAddress)
     if (!bridgeAddress) {
       console.log('unsupported token - getL2Bridge()')
       throw new Error(
@@ -1713,7 +2188,7 @@ class HopBridge extends Base {
       )
     }
     const provider = await this.getSignerOrProvider(chain, signer)
-    return L2Bridge__factory.connect(bridgeAddress, provider)
+    return new ethers.Contract(bridgeAddress, abi, provider)
   }
 
   // ToDo: Docs
@@ -2127,10 +2602,10 @@ class HopBridge extends Base {
     }
     recipient = checksumAddress(recipient)
 
-    const ammWrapper = await this.getAmmWrapper(sourceChain, sourceChain.provider)
+    //const ammWrapper = await this.getAmmWrapper(sourceChain, sourceChain.provider)
     const l2Bridge = await this.getL2Bridge(sourceChain, sourceChain.provider)
-    const attemptSwapAtSource = this.shouldAttemptSwap(amountOutMin, deadline)
-    const spender = attemptSwapAtSource ? ammWrapper.address : l2Bridge.address
+    //const attemptSwapAtSource = this.shouldAttemptSwap(amountOutMin, deadline)
+    const spender = l2Bridge.address
 
     if (BigNumber.from(bonderFee).gt(amount)) {
       throw new Error(`amount must be greater than bonder fee. amount: ${amount.toString()}, bonderFee: ${bonderFee.toString()}`)
@@ -2138,58 +2613,39 @@ class HopBridge extends Base {
 
     const isNativeToken = this.isNativeToken(sourceChain)
 
-    if (checkAllowance) {
-      await this.checkConnectedChain(this.signer, sourceChain)
-      if (!isNativeToken) {
-        const l2CanonicalToken = this.getCanonicalToken(sourceChain)
-        const allowance = await l2CanonicalToken.allowance(spender)
-        if (allowance.lt(BigNumber.from(amount))) {
-          throw new Error(Errors.NotEnoughAllowance)
-        }
-      }
-    }
+    // if (checkAllowance) {
+    //   await this.checkConnectedChain(this.signer, sourceChain)
+    //   if (!isNativeToken) {
+    //     const l2CanonicalToken = this.getCanonicalToken(sourceChain)
+    //     const allowance = await l2CanonicalToken.allowance(spender)
+    //     if (allowance.lt(BigNumber.from(amount))) {
+    //       throw new Error(Errors.NotEnoughAllowance)
+    //     }
+    //   }
+    // }
 
     if (amountOutMin.lt(0)) {
       amountOutMin = BigNumber.from(0)
     }
 
     const txOptions = [
-      destinationChainId,
       recipient,
+      0,
+      0,
       amount,
-      bonderFee
     ] as const
 
-    if (attemptSwapAtSource) {
-      const additionalOptions = [
-        amountOutMin,
-        deadline,
-        destinationAmountOutMin,
-        destinationDeadline,
-        {
-          ...(await this.txOverrides(sourceChain)),
-          value: isNativeToken ? amount : undefined
-        }
-      ] as const
+    // const additionalOptions = [
+    //   destinationAmountOutMin,
+    //   destinationDeadline,
+    //   {
+    //     ...(await this.txOverrides(sourceChain)),
+    //     value: isNativeToken ? amount : undefined
+    //   }
+    // ] as const
 
-      return ammWrapper.populateTransaction.swapAndSend(
-        ...txOptions,
-        ...additionalOptions
-      )
-    }
-
-    const additionalOptions = [
-      destinationAmountOutMin,
-      destinationDeadline,
-      {
-        ...(await this.txOverrides(sourceChain)),
-        value: isNativeToken ? amount : undefined
-      }
-    ] as const
-
-    return l2Bridge.populateTransaction.send(
-      ...txOptions,
-      ...additionalOptions
+    return l2Bridge.populateTransaction.sendToL1(
+      ...txOptions
     )
   }
 

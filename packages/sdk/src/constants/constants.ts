@@ -14,7 +14,7 @@ export enum ChainId {
   Arbitrum = 42161,
   Polygon = 137,
   Gnosis = 100,
-  ConsenSys = 18021982
+  ConsenSys = 59140
 }
 
 export enum ChainName {

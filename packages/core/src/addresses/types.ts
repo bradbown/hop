@@ -18,9 +18,10 @@ export type Bridges = {
       bridgeDeployedBlockNumber: number
     },
     consensys: {
-      l2Bridge: string,
-      l1CanonicalToken: string,
+      l2Bridge: string
+      l1CanonicalBridge: string
       l2CanonicalToken: string
+      l2CanonicalBridge: string
     },
     optimism: {
       l1CanonicalBridge: string

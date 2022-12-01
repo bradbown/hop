@@ -1,6 +1,7 @@
 import fetch from 'isomorphic-fetch'
 
 export async function makeRequest (network: string, chain: string, query: string, variables?: any) {
+  console.log("makeRequest()")
   const url = getUrl(network, chain)
   const res = await fetch(url, {
     method: 'POST',

@@ -46,6 +46,8 @@ export const useRewards = (props: Props) => {
     try {
       if (rewardsContractAddress) {
         let _provider: any = provider
+        console.log(connectedNetworkId)
+        console.log(requiredChainId)
         if (connectedNetworkId !== requiredChainId) {
           _provider = getProviderByNetworkName(networkIdToSlug(requiredChainId))
         }

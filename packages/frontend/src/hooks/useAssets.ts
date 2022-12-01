@@ -90,6 +90,7 @@ export function useAssets(selectedBridge?: HopBridge, network?: Network, toNetwo
     return selectedBridge.getL1Token()
   }, [selectedBridge])
 
+  console.log("unsupported asset: " + unsupportedAsset)
   return {
     unsupportedAsset,
     sourceToken,

@@ -133,6 +133,7 @@ class CanonicalBridge extends Base {
 
     const spender = this.getDepositApprovalAddress(chain)
     if (!spender) {
+      console.log('unsupported token - approveDeposit()')
       throw new Error(
         `token "${this.tokenSymbol}" on chain "${chain.slug}" is unsupported`
       )
@@ -163,6 +164,7 @@ class CanonicalBridge extends Base {
       chain
     )
     if (!bridgeAddress) {
+      console.log('unsupported token - deposit1()')
       throw new Error(
         `token "${this.tokenSymbol}" on chain "${chain.slug}" is unsupported`
       )
@@ -173,6 +175,7 @@ class CanonicalBridge extends Base {
       Chain.Ethereum
     )
     if (!tokenAddress) {
+      console.log('unsupported token - deposit2()')
       throw new Error(
         `token "${this.tokenSymbol}" on chain "${chain.slug}" is unsupported`
       )
@@ -195,6 +198,7 @@ class CanonicalBridge extends Base {
         chain
       )
       if (!l2TokenAddress) {
+        console.log('unsupported token - deposit3()')
         throw new Error(
           `token "${this.tokenSymbol}" on chain "${chain.slug}" is unsupported`
         )
@@ -226,6 +230,7 @@ class CanonicalBridge extends Base {
         chain
       )
       if (!bridgeAddress) {
+        console.log('unsupported token - deposit4()')
         throw new Error(
           `token "${this.tokenSymbol}" on chain "${chain.slug}" is unsupported`
         )
@@ -268,6 +273,7 @@ class CanonicalBridge extends Base {
     const token = this.getCanonicalToken(this.chain).connect(provider)
     const spender = this.getWithdrawApprovalAddress(this.chain)
     if (!spender) {
+      console.log('unsupported token - approveWithdraw()')
       throw new Error(
         `token "${this.tokenSymbol}" on chain "${this.chain.slug}" is unsupported`
       )
@@ -300,6 +306,7 @@ class CanonicalBridge extends Base {
         chain
       )
       if (!bridgeAddress) {
+        console.log('unsupported token - withdraw1()')
         throw new Error(
           `token "${this.tokenSymbol}" on chain "${chain.slug}" is unsupported`
         )
@@ -309,6 +316,7 @@ class CanonicalBridge extends Base {
         chain
       )
       if (!tokenAddress) {
+        console.log('unsupported token - withdraw2()')
         throw new Error(
           `token "${this.tokenSymbol}" on chain "${chain.slug}" is unsupported`
         )
@@ -328,6 +336,7 @@ class CanonicalBridge extends Base {
         chain
       )
       if (!bridgeAddress) {
+        console.log('unsupported token - withdraw3()')
         throw new Error(
           `token "${this.tokenSymbol}" on chain "${chain.slug}" is unsupported`
         )
@@ -337,6 +346,7 @@ class CanonicalBridge extends Base {
         Chain.Ethereum
       )
       if (!l1TokenAddress) {
+        console.log('unsupported token - withdraw4()')
         throw new Error(
           `token "${this.tokenSymbol}" on chain "${Chain.Ethereum.slug}" is unsupported`
         )
@@ -346,6 +356,7 @@ class CanonicalBridge extends Base {
         chain
       )
       if (!tokenAddress) {
+        console.log('unsupported token - withdraw5()')
         throw new Error(
           `token "${this.tokenSymbol}" on chain "${chain.slug}" is unsupported`
         )
@@ -367,6 +378,7 @@ class CanonicalBridge extends Base {
         chain
       )
       if (!bridgeAddress) {
+        console.log('unsupported token - withdraw6()')
         throw new Error(
           `token "${this.tokenSymbol}" on chain "${chain.slug}" is unsupported`
         )
@@ -379,6 +391,7 @@ class CanonicalBridge extends Base {
         chain
       )
       if (!tokenAddress) {
+        console.log('unsupported token - withdraw7()')
         throw new Error(
           `token "${this.tokenSymbol}" on chain "${chain.slug}" is unsupported`
         )
@@ -473,6 +486,7 @@ class CanonicalBridge extends Base {
       this.chain
     )
     if (!address) {
+      console.log('unsupported token - getL2CanonicalBridge()')
       throw new Error(
         `token "${this.tokenSymbol}" on chain "${this.chain.slug}" is unsupported`
       )
@@ -497,6 +511,7 @@ class CanonicalBridge extends Base {
       this.chain
     )
     if (!address) {
+      console.log('unsupported token - getL1CanonicalBridge()')
       throw new Error(
         `token "${this.tokenSymbol}" on chain "${this.chain.slug}" is unsupported`
       )

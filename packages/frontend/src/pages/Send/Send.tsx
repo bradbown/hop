@@ -584,6 +584,40 @@ const Send: FC = () => {
   const approveButtonActive = !needsTokenForFee && !unsupportedAsset && needsApproval
 
   const sendButtonActive = useMemo(() => {
+    console.log("needsApproval: " + needsApproval)
+    console.log("approveButtonActive: " + approveButtonActive)
+    console.log("checkingLiquidity: " + checkingLiquidity)
+    console.log("loadingToBalance: " + loadingToBalance)
+    console.log("loadingSendData: " + loadingSendData)
+    console.log("fromTokenAmount: " + fromTokenAmount)
+    console.log("toTokenAmount: " + toTokenAmount)
+    console.log("rate: " + rate)
+    console.log("sufficientBalance: " + sufficientBalance)
+    console.log("isLiquidityAvailable: " + isLiquidityAvailable)
+    console.log("estimatedReceived: " + estimatedReceived?.gt(0))
+    console.log("manualError: " + manualError)
+    console.log("!disabledTx: " + disabledTx)
+    console.log("gnosisEnabled: " + gnosisEnabled)
+    console.log("isCorrectSignerNetwork: " + isCorrectSignerNetwork)
+    console.log("destinationChainPaused: " + destinationChainPaused)
+
+    console.log("return" + !!(
+      !needsApproval &&
+      !approveButtonActive &&
+      !checkingLiquidity &&
+      !loadingToBalance &&
+      !loadingSendData &&
+      fromTokenAmount &&
+      toTokenAmount &&
+      rate &&
+      sufficientBalance &&
+      isLiquidityAvailable &&
+      estimatedReceived?.gt(0) &&
+      !manualError &&
+      (!disabledTx || disabledTx?.warningOnly) &&
+      (gnosisEnabled ? isCorrectSignerNetwork : !isSmartContractWallet) &&
+      !destinationChainPaused
+    ))
     return !!(
       !needsApproval &&
       !approveButtonActive &&

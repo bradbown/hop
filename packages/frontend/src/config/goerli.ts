@@ -30,5 +30,29 @@ export const networks: Networks = {
       fallbackRpcUrls: _networks.consensys.fallbackPublicRpcUrls,
       explorerUrl: 'localhost:4000',
       waitConfirmations: _networks.consensys.waitConfirmations      
-  }
+  },
+  polygon: {
+    networkId: _networks.polygon.networkId,
+    rpcUrl: _networks.polygon.publicRpcUrl,
+    fallbackRpcUrls: _networks.polygon.fallbackPublicRpcUrls,
+    explorerUrl: _networks.polygon.explorerUrls[0],
+    nativeBridgeUrl: _networks.polygon.nativeBridgeUrl,
+    waitConfirmations: _networks.polygon.waitConfirmations
+  },
+  optimism: {
+    networkId: _networks.optimism.networkId,
+    rpcUrl: _networks.optimism.publicRpcUrl,
+    fallbackRpcUrls: _networks.optimism.fallbackPublicRpcUrls,
+    explorerUrl: _networks.optimism.explorerUrls[0],
+    nativeBridgeUrl: _networks.optimism.nativeBridgeUrl,
+    waitConfirmations: _networks.optimism.waitConfirmations
+  },
+  arbitrum: {
+    networkId: _networks.arbitrum.networkId,
+    rpcUrl: _networks.arbitrum.publicRpcUrl,
+    fallbackRpcUrls: _networks.arbitrum.fallbackPublicRpcUrls,
+    explorerUrl: _networks.arbitrum.explorerUrls[0],
+    nativeBridgeUrl: _networks.arbitrum.nativeBridgeUrl,
+    waitConfirmations: _networks.arbitrum.waitConfirmations
+  },
 }

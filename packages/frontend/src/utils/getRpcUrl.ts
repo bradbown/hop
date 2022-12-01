@@ -6,6 +6,7 @@ export const getRpcUrl = (network: string) => {
   if (!network) {
     throw new Error('expected argument: network')
   }
+  console.log(networks)
   let networkRpcUrl = networks?.[network]?.rpcUrl
   // make goerli rpc available when react app network is mainnet
   if (!networkRpcUrl && network === 'goerli') {

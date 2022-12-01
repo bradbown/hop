@@ -14,8 +14,8 @@ export const networks: Networks = {
   },
   consensys: {
     name: chains.consensys.name,
-    networkId: 18021982,
-    publicRpcUrl: 'localhost:8545', // from ethers
+    networkId: 19940131,
+    publicRpcUrl: 'localhost:8445', // from ethers
     fallbackPublicRpcUrls: [],
     explorerUrls: ['localhost:4000'],
     nativeBridgeUrl: 'https://gateway.optimism.io/welcome',

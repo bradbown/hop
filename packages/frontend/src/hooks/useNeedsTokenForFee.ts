@@ -39,6 +39,7 @@ const useNeedsTokenForFee = (network: Network | undefined) => {
     checkBalance().catch(logger.error)
   }, [network, walletProvider, address])
 
+  console.log("needsToken: " + needsToken)
   return needsToken
 }
 

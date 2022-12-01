@@ -332,6 +332,7 @@ class AMM extends Base {
       this.chain
     )
     if (!saddleSwapAddress) {
+      console.error('unsupported token - getSaddleSwap()')
       throw new Error(
         `token "${this.tokenSymbol}" on chain "${this.chain.slug}" is unsupported`
       )

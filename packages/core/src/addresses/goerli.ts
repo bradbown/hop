@@ -82,9 +82,10 @@ export const addresses: Addresses = {
       },
       // Todo replace addresses
       consensys: {
+        l1CanonicalBridge: '0x0000000000000000000000000000000000000000',
         l2Bridge: '0xb276BC046DFf5024D20A3947475eA20C9F08eB1F',
-        l1CanonicalToken: '0x',
-        l2CanonicalToken: '0x'
+        l2CanonicalBridge: '0x4200000000000000000000000000000000000010',
+        l2CanonicalToken: '0x4200000000000000000000000000000000000006'
       },
       polygon: {
         l1CanonicalBridge: '0xBbD7cBFA79faee899Eaf900F13C9065bF03B1A74',
@@ -135,9 +136,10 @@ export const addresses: Addresses = {
       },
       // Todo replace addresses
       consensys: {
+        l1CanonicalBridge: '0x0000000000000000000000000000000000000000',
         l2Bridge: '0xb276BC046DFf5024D20A3947475eA20C9F08eB1F',
-        l1CanonicalToken: '0x',
-        l2CanonicalToken: '0x'
+        l2CanonicalBridge: '0x4200000000000000000000000000000000000010',
+        l2CanonicalToken: '0x4200000000000000000000000000000000000006'
       },
       polygon: {
         l1CanonicalBridge: '0xBbD7cBFA79faee899Eaf900F13C9065bF03B1A74',

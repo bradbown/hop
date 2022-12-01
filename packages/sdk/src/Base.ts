@@ -158,7 +158,7 @@ class Base {
       this.baseExplorerUrl = 'https://goerli.explorer.hop.exchange'
     }
 
-    this.init()
+    //this.init()
   }
 
   async init () {
@@ -199,6 +199,7 @@ class Base {
       }
       return data
     } catch (err: any) {
+      console.log("async call")
       console.error('fetchConfigFromS3 error:', err)
     }
   }
@@ -419,6 +420,7 @@ class Base {
    *```
    */
   public async getSignerAddress () {
+    console.log(this.signer)
     if (Signer.isSigner(this.signer)) {
       return this.signer.getAddress()
     }
@@ -561,6 +563,7 @@ class Base {
   }
 
   protected async _getBonderAddress (token: TToken, sourceChain: TChain, destinationChain: TChain): Promise<string> {
+    console.log("getBonderAddy")
     await this.fetchConfigFromS3()
     token = this.toTokenModel(token)
     sourceChain = this.toChainModel(sourceChain)
@@ -575,6 +578,7 @@ class Base {
   }
 
   protected async _getMessengerWrapperAddress (token: TToken, destinationChain: TChain): Promise<string> {
+    console.log("getMessegnerWrapperaddy")
     await this.fetchConfigFromS3()
     token = this.toTokenModel(token)
     destinationChain = this.toChainModel(destinationChain)
@@ -588,6 +592,7 @@ class Base {
   }
 
   public async getFeeBps (token: TToken, destinationChain: TChain) {
+    console.log("getfeebps")
     await this.fetchConfigFromS3()
     token = this.toTokenModel(token)
     destinationChain = this.toChainModel(destinationChain)
@@ -615,6 +620,7 @@ class Base {
   }
 
   public async getRelayerFee (destinationChain: TChain, tokenSymbol: string): Promise<BigNumber> {
+    console.log("getrelayerfee")
     await this.fetchConfigFromS3()
     destinationChain = this.toChainModel(destinationChain)
     const isFeeEnabled = this.relayerFeeEnabled[destinationChain.slug]

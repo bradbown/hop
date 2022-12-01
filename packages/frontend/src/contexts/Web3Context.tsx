@@ -61,7 +61,7 @@ const getRpcUrls = (): Record<string, string> => {
       421613: getRpcUrl(ChainSlug.Arbitrum),
       420: getRpcUrl(ChainSlug.Optimism),
       80001: getRpcUrl(ChainSlug.Polygon),
-      18021982: getRpcUrl(ChainSlug.ConsenSys),
+      59140: getRpcUrl(ChainSlug.ConsenSys),
     }
   } else if (reactAppNetwork === 'localhost') {
     return {

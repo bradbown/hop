@@ -51,6 +51,10 @@ class Network {
     this.nativeBridgeUrl = props.nativeBridgeUrl
     this.waitConfirmations = props.waitConfirmations
     this.explorerUrl = props.explorerUrl
+
+    console.log("Networks.ts constructor")
+    console.log(this.name)
+    console.log(this.provider)
   }
 
   toString() {

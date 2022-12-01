@@ -13,13 +13,17 @@ let addresses = kovanAddresses
 let networks = kovanNetworks
 const isMainnet = hopAppNetwork === Slug.mainnet
 
+console.log(hopAppNetwork)
 if (isMainnet) {
   addresses = mainnetAddresses
   networks = mainnetNetworks
 } else if (hopAppNetwork === Slug.goerli) {
+  console.log("slug.goerli!")
   addresses = goerliAddresses
   networks = goerliNetworks
+  console.log(networks)
 } else if (hopAppNetwork === Slug.localhost) {
+  console.log("slug.localhost!")
   addresses = localhostAddresses
   networks = localhostNetworks
 }

@@ -188,6 +188,7 @@ class HopBridge extends Base {
    *```
    */
   public connect (signer: Signer) {
+    console.log("connect()! \n" + signer)
     const hopBridge = new HopBridge(
       this.network,
       signer,
@@ -219,6 +220,7 @@ class HopBridge extends Base {
     network: string,
     chain: TChain
   ) {
+    console.log("token: " + token + "\nnetwork: " + network + "\nchain: " + chain.toString())
     token = this.toTokenModel(token)
     chain = this.toChainModel(chain)
     let { name, symbol, decimals, image } = metadata.tokens[network][token.canonicalSymbol]
@@ -692,10 +694,11 @@ class HopBridge extends Base {
     sourceChain = this.toChainModel(sourceChain)
     destinationChain = this.toChainModel(destinationChain)
 
+    console.log("chain: ")
+    console.log(sourceChain)
+
     console.log("destination chain: ")
     console.log(destinationChain)
-    console.log("chain: ")
-    console.log(Chain.Consensys)
     if(destinationChain.chainId == Chain.Consensys.chainId) {
       const destinationTxFeePromise = this.getDestinationTransactionFee(
         sourceChain,
@@ -708,7 +711,7 @@ class HopBridge extends Base {
         destinationTxFeePromise
       ])
       const amountOut = amountIn.sub(destinationTxFee)
-      const rate = 0 
+      const rate = 1
       const priceImpact = 0
       const hTokenAmount = BigNumber.from(0)
       const lpFees = BigNumber.from(0)
@@ -716,6 +719,8 @@ class HopBridge extends Base {
       const adjustedDestinationTxFee = destinationTxFee
       const totalFee = destinationTxFee
       const estimatedReceived = amountIn.sub(destinationTxFee)
+      console.log("estimate received: " + estimatedReceived)
+      console.log("destination tx fee: " + adjustedDestinationTxFee)
       return {
         amountOut,
         rate,
@@ -960,13 +965,12 @@ class HopBridge extends Base {
     sourceChain: TChain,
     destinationChain: TChain
   ): Promise<BigNumber> {
-    //TODO configure this with Consensys chain
-    if(destinationChain == Chain.Consensys) {
-      return BigNumber.from(1);
-    }
-
     sourceChain = this.toChainModel(sourceChain)
     destinationChain = this.toChainModel(destinationChain)
+    //TODO configure this with Consensys chain
+    if(destinationChain.chainId == Chain.Consensys.chainId) {
+      return BigNumber.from(0);
+    }
 
     if (sourceChain.isL1 && !relayableChains.includes(destinationChain.slug)) {
       return BigNumber.from(0)
@@ -1703,6 +1707,7 @@ class HopBridge extends Base {
     chain = this.toChainModel(chain)
     const bridgeAddress = this.getL2BridgeAddress(this.tokenSymbol, chain)
     if (!bridgeAddress) {
+      console.log('unsupported token - getL2Bridge()')
       throw new Error(
         `token "${this.tokenSymbol}" on chain "${chain.slug}" is unsupported`
       )
@@ -1734,6 +1739,7 @@ class HopBridge extends Base {
       chain
     )
     if (!ammWrapperAddress) {
+      console.log('unsupported token - getAmmWrapper()')
       throw new Error(
         `token "${this.tokenSymbol}" on chain "${chain.slug}" is unsupported`
       )
@@ -1801,6 +1807,7 @@ class HopBridge extends Base {
       chain
     )
     if (!saddleLpTokenAddress) {
+      console.log('unsupported token - getSaddleLpToken')
       throw new Error(
         `token "${this.tokenSymbol}" on chain "${chain.slug}" is unsupported`
       )
@@ -2076,8 +2083,8 @@ class HopBridge extends Base {
 
     const txOptions = [
       recipient,
-      relayerFee || BigNumber.from(0),
-      deadline,
+      0,
+      0,
       amount || 0
     ] as const
 
